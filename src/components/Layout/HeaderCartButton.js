@@ -5,15 +5,15 @@ import { useContext, useEffect, useState } from "react";
 const HeaderCartButton = (props) => {
   const [btnIsHighlited, setBtnIsHighlited] = useState(false);
   const cartCtx = useContext(CartContext);
-  const { items } = cartCtx;
+  const { items } = cartCtx.items;
   const numberOfCartItem = cartCtx.items.reduce((curnNumber, item) => {
     return curnNumber + item.amount;
   }, 0);
   const btnClasses = `${classes.button} ${btnIsHighlited ? classes.bump : ""}`;
   useEffect(() => {
-    if (cartCtx.items.length === 0) {
-      return;
-    }
+    // if (items.length === 0) {
+    //   return;
+    // }
     setBtnIsHighlited(true);
     const timer = setTimeout(() => {
       setBtnIsHighlited(false);
