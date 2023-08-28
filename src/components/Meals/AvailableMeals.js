@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [httpError, setHttpError] = useState(null);
   useEffect(() => {
+    setIsLoading(true);
     const feachMeals = async () => {
       const response = await fetch(
         "https://react-http-bdef2-default-rtdb.firebaseio.com/meals.json"
@@ -21,9 +24,28 @@ const AvailableMeals = () => {
         });
       }
       setMeals(loadedMeals);
+      setIsLoading(false);
     };
-    feachMeals();
+
+    feachMeals().catch((error) => {
+      setIsLoading(false);
+      setHttpError(error.message);
+    });
   }, []);
+  if (isLoading) {
+    return (
+      <section>
+        <p>Loading ...</p>
+      </section>
+    );
+  }
+  if (httpError) {
+    return (
+      <section>
+        <p>has an error : ${httpError}</p>
+      </section>
+    );
+  }
   const mealsList = meals.map((meal) => {
     return (
       <MealItem
